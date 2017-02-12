@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class HappinessController
     {
 
-    @RequestMapping("/happiness/{happinessIndex}")
-    public Happiness happincess(@PathVariable int happinessIndex)
+    @RequestMapping("/happiness/{teamId}/{happinessRating}")
+    public HappinessRating happiness(@PathVariable long teamId, @PathVariable int happinessRating)
         {
-        return new Happiness(1, happinessIndex);
+        return new HappinessRating(teamId, happinessRating);
         }
     }
