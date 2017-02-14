@@ -1,18 +1,26 @@
 package com.austenconstable;
 
+import org.springframework.data.annotation.Id;
+
+import java.util.Date;
+
 public class HappinessRating
     {
 
-    private final long teamId;
+    @Id
+    private String id;
+    private final String teamId;
     private final int happinessRating;
+    private final Date ratingDate;
 
-    public HappinessRating(long teamId, int happinessRating)
+    public HappinessRating(String teamId, int happinessRating, Date ratingDate)
         {
         this.teamId = teamId;
         this.happinessRating = happinessRating;
+        this.ratingDate = ratingDate;
         }
 
-    public long getTeamId()
+    public String getTeamId()
         {
         return teamId;
         }
@@ -20,5 +28,10 @@ public class HappinessRating
     public int getHappinessRating()
         {
         return happinessRating;
+        }
+
+    public Date getRatingDate()
+        {
+        return ratingDate;
         }
     }
