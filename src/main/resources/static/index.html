@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Happiness Trend</title>
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.min.js" ></script>
 </head>
 <body>
-<div>
 <canvas id="myChart" width="400" height="400"></canvas>
-</div>
 <script>
+
+    $.getJSON('http://localhost:8080/happiness', function(datajson) {
+        //data is the JSON string
+        console.log(datajson);
+    });
+
     var ctx = document.getElementById("myChart").getContext('2d');
     var data = {
         datasets: [
