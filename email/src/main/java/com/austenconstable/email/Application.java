@@ -1,4 +1,4 @@
-package com.austenconstable;
+package com.austenconstable.email;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

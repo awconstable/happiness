@@ -1,4 +1,4 @@
-package com.austenconstable;
+package com.austenconstable.web.rating;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.Param;

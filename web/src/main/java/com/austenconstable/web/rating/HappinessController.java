@@ -1,4 +1,4 @@
-package com.austenconstable;
+package com.austenconstable.web.rating;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;

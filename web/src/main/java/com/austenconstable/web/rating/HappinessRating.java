@@ -1,4 +1,4 @@
-package com.austenconstable;
+package com.austenconstable.web.rating;
 
 import org.springframework.data.annotation.Id;
 
@@ -10,10 +10,10 @@ public class HappinessRating
     @Id
     private String id;
     private final String teamId;
-    private final int happinessRating;
+    private final Integer happinessRating;
     private final Date ratingDate;
 
-    public HappinessRating(String teamId, int happinessRating, Date ratingDate)
+    public HappinessRating(String teamId, Integer happinessRating, Date ratingDate)
         {
         this.teamId = teamId;
         this.happinessRating = happinessRating;
@@ -25,7 +25,7 @@ public class HappinessRating
         return teamId;
         }
 
-    public int getHappinessRating()
+    public Integer getHappinessRating()
         {
         return happinessRating;
         }
