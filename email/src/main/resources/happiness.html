@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -63,7 +63,7 @@
                                     <h3 style="margin:0;color: #444;line-height:100%;">
                                         <p>Your happiness is important to us and we'd really like to know how you feel working here.</p>
                                         <p>We'll send you an email each week and we'd appreciate your feedback by using the buttons below.</p>
-                                        <p>Feedback is anonymous with transparent results which are available to all <a href="#">here</a></p>
+                                        <p>Feedback is anonymous with transparent results which are available to all <a th:href="${request.viewUrl}+'/'+${request.teamId}">here</a></p>
                                     </h3>
                                 </td>
                             </tr>
@@ -72,13 +72,13 @@
                                 <table cellpadding="0" cellspacing="0" border="0" align="center">
                                     <tr>
                                         <td style="width:200px; text-align: center">
-                                            <p style="font-size:84px;font-weight: bolder;color:#333"><a href="#">:-(</a></p>
+                                            <p style="font-size:84px;font-weight: bolder;color:#333"><a th:href="${request.ratingUrl}+'/'+${request.teamId}+'/1'">:-(</a></p>
                                         </td>
                                         <td style="width:200px; text-align: center">
-                                            <p style="font-size:84px;font-weight: bolder;color:#333"><a href="#">:-|</a></p>
+                                            <p style="font-size:84px;font-weight: bolder;color:#333"><a th:href="${request.ratingUrl}+'/'+${request.teamId}+'/3'">:-|</a></p>
                                         </td>
                                         <td style="width:200px; text-align: center">
-                                            <p style="font-size:84px;font-weight: bolder;color:#333"><a href="#">:-D</a></p>
+                                            <p style="font-size:84px;font-weight: bolder;color:#333"><a th:href="${request.ratingUrl}+'/'+${request.teamId}+'/5'">:-D</a></p>
                                         </td>
                                     </tr>
                                 </table></td>
