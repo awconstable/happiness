@@ -26,17 +26,4 @@ public class HappinessController
         return rating;
         }
 
-/*    @RequestMapping(value = "/happiness", method = RequestMethod.GET)
-    public Collection<HappinessRating> listRatings()
-        {
-        return repository.findAll();
-        }*/
-
-    @RequestMapping("/happiness/deleteall")
-    public String deleteAllData(){
-        repository.deleteAll();
-
-        return "deleted all data";
-    }
-
     }

@@ -1,14 +1,10 @@
 package com.austenconstable.web.rating;
 
-import org.springframework.data.annotation.Id;
-
 import java.util.Date;
 
 public class HappinessRating
     {
 
-    @Id
-    private String id;
     private final String teamId;
     private final Integer happinessRating;
     private final Date ratingDate;
@@ -33,5 +29,15 @@ public class HappinessRating
     public Date getRatingDate()
         {
         return ratingDate;
+        }
+
+    @Override
+    public String toString()
+        {
+        return "HappinessRating{" +
+                "teamId='" + teamId + '\'' +
+                ", happinessRating=" + happinessRating +
+                ", ratingDate=" + ratingDate +
+                '}';
         }
     }
