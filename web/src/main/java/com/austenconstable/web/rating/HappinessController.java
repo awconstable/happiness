@@ -18,12 +18,12 @@ public class HappinessController
     private HappinessRepository repository;
 
     @RequestMapping("/happiness/{teamId}/{happinessRating}")
-    public HappinessRating happiness(@PathVariable String teamId, @PathVariable int happinessRating) throws Exception
+    public String happiness(@PathVariable String teamId, @PathVariable int happinessRating) throws Exception
         {
 
         HappinessRating rating = new HappinessRating(teamId, happinessRating, new Date());
         repository.save(rating);
-        return rating;
+        return "Thank You";
         }
 
     }
