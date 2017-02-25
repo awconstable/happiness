@@ -1,0 +1,16 @@
+[
+  {
+    "_id": "6e90f0e0-fbaf-11e6-86b4-79496f2a01a5",
+    "_type": "visualization",
+    "_source": {
+      "title": "Average Happiness Rating",
+      "visState": "{\"type\":\"timelion\",\"title\":\"Average Happiness Rating\",\"params\":{\"expression\":\".es(*, metric='avg:happinessRating').label('Average Happiness Rating').yaxis(min=0,max=5)\",\"interval\":\"1M\"}}",
+      "uiStateJSON": "{}",
+      "description": "",
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{}"
+      }
+    }
+  }
+]
