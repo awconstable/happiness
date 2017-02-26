@@ -10,8 +10,12 @@ public class Colleague
 
     @Id
     private String id;
-    private final String teamId;
-    private final String email;
+    private String teamId;
+    private String email;
+
+    public Colleague()
+        {
+        }
 
     public Colleague(String teamId, String email)
         {
