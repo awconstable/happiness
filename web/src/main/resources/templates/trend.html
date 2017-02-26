@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Happiness</title>
+</head>
+<body>
+<iframe th:src="${kibanaUrl} + '/app/kibana#/visualize/edit/6e90f0e0-fbaf-11e6-86b4-79496f2a01a5?embed=true&amp;_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:now-6M,interval:\'1M\',mode:quick,timezone:Europe%2FLondon,to:now))&amp;_a=(filters:!(),linked:!f,query:(query_string:(analyze_wildcard:!t,query:\'*\')),uiState:(),vis:(aggs:!(),listeners:(),params:(expression:\'.es(*,+metric%3D!\'avg:happinessRating!\').label(!\'Average+Happiness+Rating!\').yaxis(min%3D0,max%3D5)\',interval:\'1M\'),title:\'Average+Happiness+Rating\',type:timelion))'" height="600" width="800" style="border: 0;"></iframe>
+</body>
+</html>
