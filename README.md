@@ -20,6 +20,28 @@ A non-exhaustive list of known limitations:
 //TODO add quick start
 1. [Vagrant based Elasticsearch & Kibana 5.2](https://github.com/awconstable/elasticsearch) or your own install.
 
+
+### Create the elasticsearch index
+```
+PUT happiness
+{
+  "mappings": {
+    "rating": {
+      "properties": {
+        "teamID": {
+          "type": "text"
+        },
+        "happinessRating": {
+          "type": "integer"
+        },
+        "ratingDate": {
+          "type": "date"
+        }
+      }
+    }
+  }
+}
+```
 ### Add team members
 
 ```
