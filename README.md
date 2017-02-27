@@ -42,6 +42,10 @@ PUT happiness
   }
 }
 ```
+### Start a docker container
+```
+docker run --name happiness_app -d -p 8080:8080 -e spring.data.mongodb.host={mongo host} -e spring.data.mongodb.port={mongo port} -e kibana.url=http://hostname:5601 -e elasticsearch.host={es host} happiness
+```
 ### Add team members
 
 ```
