@@ -50,6 +50,7 @@ public class EmailFeedbackRequestSender implements FeedbackRequestSender
             mimeHelper.setFrom(fromEmail);
             mimeHelper.setTo(request.getToEmail());
             mimeHelper.setSubject(emailSubject);
+            mimeHelper.setText(writer.toString(), true);
 
         };
         this.mailSender.send(mimeMessagePreparator);
