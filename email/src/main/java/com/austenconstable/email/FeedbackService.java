@@ -26,9 +26,15 @@ public class FeedbackService
             List<Colleague> colleagues = colleagueRepository.findAll();
 
             for (Colleague colleague: colleagues){
-                 FeedbackRequest request = new FeedbackRequest(colleague.getTeamId(), colleague.getEmail(), viewUrl, ratingUrl);
-                 System.out.println(request);
-                 emailSender.requestFeedback(request);
+
+                try {
+                    FeedbackRequest request = new FeedbackRequest(colleague.getTeamId(), colleague.getEmail(), viewUrl, ratingUrl);
+                    System.out.println(request);
+                    emailSender.requestFeedback(request);
+                } catch (Exception e) {
+                    System.out.println("email failed to send for: " + colleague.getEmail());
+                    System.out.println(e);
+                }
             }
         }
 

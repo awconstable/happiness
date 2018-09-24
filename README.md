@@ -13,45 +13,25 @@ A non-exhaustive list of known limitations:
 ## Dependencies
 
 1. MongoDB
-2. Elasticsearch & Kibana 5.2
 
 ## Quick start guide
 
-//TODO add quick start
-1. [Vagrant based Elasticsearch & Kibana 5.2](https://github.com/awconstable/elasticsearch) or your own install.
+### Add a team
 
+```
+ curl -H "Content-Type: application/json" -X POST -d '{"teamId": "esrp", "teamName": "Team Name", "platformName": "Platform Name", "domainName": "Domain Name"}' http://localhost:8080/team
+```
 
-### Create the elasticsearch index
-```
-PUT happiness
-{
-  "mappings": {
-    "rating": {
-      "properties": {
-        "teamID": {
-          "type": "text"
-        },
-        "happinessRating": {
-          "type": "integer"
-        },
-        "ratingDate": {
-          "type": "date"
-        }
-      }
-    }
-  }
-}
-```
-### Start a docker container
-```
-docker run --name happiness_app -d -p 8080:8080 -e spring.data.mongodb.host={mongo host} -e spring.data.mongodb.port={mongo port} -e kibana.url=http://hostname:5601 -e elasticsearch.host={es host} happiness
-```
 ### Add team members
 
 ```
 curl -H "Content-Type: application/json" -X POST -d '{"teamId": "teamname", "email": "user.email@big.co"}' http://localhost:8080/colleague
 ```
 
+### Update team members
+```
+curl -H "Content-Type: application/json" -X PUT -d '{"teamId": "teamname", "email": "user.email@big.co"}' http://localhost/colleague/{itemid}
+```
 ### View team members
 
 <http://localhost:8080/colleague>
@@ -62,6 +42,59 @@ curl -H "Content-Type: application/json" -X POST -d '{"teamId": "teamname", "ema
 curl -X DELETE http://localhost:8080/colleague/{id}
 ```
 
-### View happiness trends for the last 6 months
+### View happiness trends for the last 12 months
 
 <http://localhost:8080>
+
+
+---
+
+## Developer guide
+
+### Compile
+
+```
+mvn clean install
+```
+
+### Run in development
+
+*Might be **-Drun.arguments** - see: https://stackoverflow.com/questions/23316843/get-command-line-arguments-from-spring-bootrun*
+
+```
+mvn spring-boot:run -Dspring-boot.run.arguments="--spring.data.mongodb.host=<mongo host>,--spring.data.mongodb.port=<mongo port>,--spring-data.mongodb.database=<mongo db>"
+```
+
+### Create Docker containers
+
+```
+mvn dockerfile:build dockerfile:tag
+```
+
+### Deploy web docker image from Vagrant to live
+
+```
+docker save team/happiness | bzip2 | ssh <destination host> 'bunzip2 | docker load'
+```
+
+### Deploy email docker image from Vagrant to live
+
+```
+docker save team/happiness-email | bzip2 | ssh <destination host> 'bunzip2 | docker load'
+```
+
+### Run happiness app
+
+*See https://github.com/docker-library/openjdk/issues/135 as to why spring.boot.mongodb.. env vars don't work*
+
+```
+docker stop happiness_app
+docker rm happiness_app
+docker run --name happiness_app -d -p 8080:8080 --network mongonetwork -e spring_data_mongodb_host=<mongo host> -e spring_data_mongodb_port=<mongo port> -e spring_data_mongodb_database=<mongo db> team/happiness:0.0.1-SNAPSHOT
+```
+
+### Run happiness emailer - runs via cron
+
+```
+docker run --rm --name happiness_email --network mongonetwork -e spring_data_mongodb_host=<mongo host> -e spring_data_mongodb_port=<mongo port> -e spring_data_mongodb_database=<mongo db> -e rating_url=<rating url> -e view_url=<view url> -e email_subject="How do you feel?" -e from_email=<from email> -e spring_mail_host=<mail host> team/happiness-email:0.0.1-SNAPSHOT
+```

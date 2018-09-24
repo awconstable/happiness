@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <title>Team Happiness</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+      <link type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet" />
+    <script type="text/javascript">
+
+        $.urlParam = function(name){
+            var results = new RegExp('[\?&]' + name + '=([^&]*)').exec(window.location.href);
+            if (results==null){
+                return null;
+            }
+            else{
+                return results[1] || 0;
+            }
+        }
+
+        var showTable;
+
+        if($.urlParam == null || !$.urlParam('table') || $.urlParam('table') == 'false'){
+            showTable = false;
+        } else {
+            showTable = true;
+        }
+
+        console.log(showTable);
+
+      google.charts.load('current', {'packages':['line', 'table']});
+      google.charts.setOnLoadCallback(drawChart);
+      if(showTable){
+          console.log('showTable');
+        google.charts.setOnLoadCallback(drawTable);
+      }
+
+    function timedReload(team) {
+
+        if(team === undefined){
+            teamParam = "";
+        } else {
+            teamParam = "?team=" + team;
+        }
+
+        setTimeout("location.replace('//' + location.host + location.pathname + teamParam);", 30000);
+    }
+
+    var team;
+
+    if($.urlParam == null || !$.urlParam('team')){
+        team = 'all';
+    } else {
+        team = $.urlParam('team');
+    }
+
+    function drawChart() {
+
+    var jsonData = $.ajax({
+         url: "/trend/weekly/" + team + "/",
+          dataType: "json",
+          async: false
+          }).responseText;
+
+     var data = new google.visualization.DataTable(jsonData);
+
+      var options = {
+        chart: {
+          title: 'Team Happiness',
+          subtitle: 'average happiness over time'
+        },
+        width: 900,
+        height: 500,
+        series: {
+            // Gives each series an axis name that matches the Y-axis below.
+            0: {targetAxisIndex: 0},
+            1: {targetAxisIndex: 1}
+        },
+        vAxes: {
+            // Adds titles to each axis.
+            0: {title: 'Happiness (avg)', viewWindow:{max: 5, min: 0}},
+            1: {title: 'Responses', viewWindow:{min: 0}, gridlines:{color: '#f2f2f2'}}
+        },
+        colors:['orange','grey']
+      };
+
+      var chart = new google.charts.Line(document.getElementById('linechart_material'));
+
+      chart.draw(data, google.charts.Line.convertOptions(options));
+    }
+
+    function drawTable() {
+
+          var jsonData = $.ajax({
+              url: "trend/weekly/" + team + "/",
+              dataType: "json",
+              async: false
+          }).responseText;
+
+          var data = new google.visualization.DataTable(jsonData);
+
+          var table = new google.visualization.Table(document.getElementById('table'));
+
+          table.draw(data);
+      }
+
+    $(document).ready(function(){
+        if($.urlParam('success') == "true") {
+            toastr.options = {
+                "positionClass": "toast-top-full-width",
+                "extendedTimeOut": "10000"
+            }
+            toastr.success('Thank you for your submission');
+        }
+    });
+    </script>
+  </head>
+  <body>
+    <div id="linechart_material" style="width: 900px; height: 500px"></div>
+    <div id="table" ></div>
+  </body>
+</html>

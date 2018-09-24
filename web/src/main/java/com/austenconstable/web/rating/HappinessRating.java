@@ -1,15 +1,19 @@
 package com.austenconstable.web.rating;
 
-import java.util.Date;
+import org.springframework.data.annotation.Id;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 public class HappinessRating
     {
-
+    @Id
+    private String id;
     private final String teamId;
     private final Integer happinessRating;
-    private final Date ratingDate;
+    private final LocalDateTime ratingDate;
 
-    public HappinessRating(String teamId, Integer happinessRating, Date ratingDate)
+    public HappinessRating(String teamId, Integer happinessRating, LocalDateTime ratingDate)
         {
         this.teamId = teamId;
         this.happinessRating = happinessRating;
@@ -26,7 +30,7 @@ public class HappinessRating
         return happinessRating;
         }
 
-    public Date getRatingDate()
+    public LocalDateTime getRatingDate()
         {
         return ratingDate;
         }
