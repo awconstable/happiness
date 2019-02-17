@@ -1,0 +1,263 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+      <title>Team Dashboard</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        var team = /*[[${team}]]*/ 'all';
+        console.log('team: ' + team);
+
+        /*]]>*/
+    </script>
+    <script type="text/javascript">
+
+      google.charts.load('current', {'packages':['line']});
+      google.charts.setOnLoadCallback(drawCycleTimeChart);
+      google.charts.setOnLoadCallback(drawDeploymentFrequencyChart);
+      google.charts.setOnLoadCallback(drawIncidentsDueToChangeChart);
+      google.charts.setOnLoadCallback(drawProductionDefectsChart);
+      google.charts.setOnLoadCallback(drawTeamHappinessChart);
+      google.charts.setOnLoadCallback(drawCustomerSatisfactionChart);
+
+      function drawCycleTimeChart() {
+
+    var jsonData = $.ajax({
+         url: "/cycletime/" + team + "/",
+          dataType: "json",
+          async: false
+          }).responseText;
+
+     var data = new google.visualization.DataTable(jsonData);
+
+      var options = {
+        chart: {
+            title: 'Cycle Time'
+        },
+          legend: {
+              position: 'none'
+          },
+          width: 400,
+          height: 300,
+        series: {
+          // Gives each series an axis name that matches the Y-axis below.
+          0: {targetAxisIndex: 0},
+        },
+          vAxes: {
+              // Adds titles to each axis.
+              0: {title: 'Cycle Time (days)', viewWindow:{min: 0}},
+          },
+          colors: ['orange']
+      };
+
+          var chart = new google.charts.Line(document.getElementById('linechart_cycletime'));
+
+      chart.draw(data, google.charts.Line.convertOptions(options));
+    }
+
+      function drawDeploymentFrequencyChart() {
+
+          var jsonData = $.ajax({
+              url: "/deployment_frequency/" + team + "/",
+              dataType: "json",
+              async: false
+          }).responseText;
+
+          var data = new google.visualization.DataTable(jsonData);
+
+          var options = {
+              chart: {
+                  title: 'Deployment Frequency'
+              },
+              legend: {
+                  position: 'none'
+              },
+              width: 400,
+              height: 300,
+              series: {
+                  // Gives each series an axis name that matches the Y-axis below.
+                  0: {targetAxisIndex: 0},
+              },
+              vAxes: {
+                  // Adds titles to each axis.
+                  0: {title: 'Deployment Frequency (days)', viewWindow: {min: 0}},
+              },
+              colors: ['green']
+          };
+
+          var chart = new google.charts.Line(document.getElementById('linechart_deployment_frequency'));
+
+          chart.draw(data, google.charts.Line.convertOptions(options));
+      }
+
+      function drawIncidentsDueToChangeChart() {
+
+          var jsonData = $.ajax({
+              url: "/incidents_due_to_change/" + team + "/",
+              dataType: "json",
+              async: false
+          }).responseText;
+
+          var data = new google.visualization.DataTable(jsonData);
+
+          var options = {
+              chart: {
+                  title: 'Incidents due to change'
+              },
+              legend: {
+                  position: 'none'
+              },
+              width: 400,
+              height: 300,
+              series: {
+                  // Gives each series an axis name that matches the Y-axis below.
+                  0: {targetAxisIndex: 0},
+              },
+              vAxes: {
+                  // Adds titles to each axis.
+                  0: {title: 'Incidents due to change', viewWindow: {min: 0}},
+              },
+              colors: ['red']
+          };
+
+          var chart = new google.charts.Line(document.getElementById('linechart_incidents_due_to_change'));
+
+          chart.draw(data, google.charts.Line.convertOptions(options));
+      }
+
+      function drawProductionDefectsChart() {
+
+          var jsonData = $.ajax({
+              url: "/production_defects/" + team + "/",
+              dataType: "json",
+              async: false
+          }).responseText;
+
+          var data = new google.visualization.DataTable(jsonData);
+
+          var options = {
+              chart: {
+                  title: 'Production Defects'
+              },
+              legend: {
+                  position: 'none'
+              },
+              width: 400,
+              height: 300,
+              series: {
+                  // Gives each series an axis name that matches the Y-axis below.
+                  0: {targetAxisIndex: 0},
+              },
+              vAxes: {
+                  // Adds titles to each axis.
+                  0: {title: 'Production Defects', viewWindow: {min: 0}},
+              }
+          };
+
+          var chart = new google.charts.Line(document.getElementById('linechart_production_defects'));
+
+          chart.draw(data, google.charts.Line.convertOptions(options));
+      }
+
+      function drawTeamHappinessChart() {
+
+          var jsonData = $.ajax({
+              url: "/team_happiness/" + team + "/",
+              dataType: "json",
+              async: false
+          }).responseText;
+
+          var data = new google.visualization.DataTable(jsonData);
+
+          var options = {
+              chart: {
+                  title: 'Team Happiness'
+              },
+              legend: {
+                  position: 'none'
+              },
+              width: 400,
+              height: 300,
+              series: {
+                  // Gives each series an axis name that matches the Y-axis below.
+                  0: {targetAxisIndex: 0},
+              },
+              vAxes: {
+                  // Adds titles to each axis.
+                  0: {title: 'Team Happiness', viewWindow: {min: 0}},
+              }
+          };
+
+          var chart = new google.charts.Line(document.getElementById('linechart_team_happiness'));
+
+          chart.draw(data, google.charts.Line.convertOptions(options));
+      }
+
+      function drawCustomerSatisfactionChart() {
+
+          var jsonData = $.ajax({
+              url: "/customer_satisfaction/" + team + "/",
+              dataType: "json",
+              async: false
+          }).responseText;
+
+          var data = new google.visualization.DataTable(jsonData);
+
+          var options = {
+              chart: {
+                  title: 'Customer Satisfaction'
+              },
+              legend: {
+                  position: 'none'
+              },
+              width: 400,
+              height: 300,
+              series: {
+                  // Gives each series an axis name that matches the Y-axis below.
+                  0: {targetAxisIndex: 0},
+              },
+              vAxes: {
+                  // Adds titles to each axis.
+                  0: {title: 'Customer Satisfaction', viewWindow: {min: 0}},
+              }
+          };
+
+          var chart = new google.charts.Line(document.getElementById('linechart_customer_satisfaction'));
+
+          chart.draw(data, google.charts.Line.convertOptions(options));
+      }
+    </script>
+  </head>
+  <body>
+  <h1>Team: <span th:text="${teamName}"></span></h1>
+  <table>
+    <tr>
+      <td>
+        <div id="linechart_cycletime" style="width: 400px; height: 300px"></div>
+      </td>
+      <td>
+        <div id="linechart_deployment_frequency" style="width: 400px; height: 300px"></div>
+      </td>
+        <td>
+            <div id="linechart_team_happiness" style="width: 400px; height: 300px"></div>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <div id="linechart_incidents_due_to_change" style="width: 400px; height: 300px"></div>
+      </td>
+      <td>
+        <div id="linechart_production_defects" style="width: 400px; height: 300px"></div>
+      </td>
+        <td>
+            <div id="linechart_customer_satisfaction" style="width: 400px; height: 300px"></div>
+        </td>
+    </tr>
+  </table>
+  </body>
+</html>
