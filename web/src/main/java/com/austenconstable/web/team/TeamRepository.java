@@ -9,5 +9,4 @@ import java.util.Optional;
 public interface TeamRepository extends MongoRepository<Team, String>  {
 
     Optional<Team> findByTeamIdIgnoreCase(String teamId);
-    
 }
