@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mobile</artifactId>
-            <version>1.5.14.RELEASE</version>
+            <version>1.5.19.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -65,7 +65,6 @@
         <dependency>
             <groupId>com.google.visualization</groupId>
             <artifactId>visualization-datasource</artifactId>
-            <version>1.1.1</version>
         </dependency>
 
         <dependency>
