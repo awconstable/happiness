@@ -6,13 +6,15 @@ package com.austenconstable.email;
 public class FeedbackRequest
     {
         private final String teamId;
+        private final String teamName;
         private final String toEmail;
         private final String viewUrl;
         private final String ratingUrl;
 
-    public FeedbackRequest(String teamId, String toEmail, String viewUrl, String ratingUrl)
+    public FeedbackRequest(String teamId, String teamName, String toEmail, String viewUrl, String ratingUrl)
         {
         this.teamId = teamId;
+        this.teamName = teamName;
         this.toEmail = toEmail;
         this.viewUrl = viewUrl;
         this.ratingUrl = ratingUrl;
@@ -22,6 +24,8 @@ public class FeedbackRequest
         {
         return teamId;
         }
+
+    public String getTeamName() { return teamName; }
 
     public String getToEmail()
         {
@@ -43,6 +47,7 @@ public class FeedbackRequest
         {
         return "FeedbackRequest{" +
                 "teamId='" + teamId + '\'' +
+                ", teamName='" + teamName + '\'' +
                 ", toEmail='" + toEmail + '\'' +
                 ", viewUrl='" + viewUrl + '\'' +
                 ", ratingUrl='" + ratingUrl + '\'' +

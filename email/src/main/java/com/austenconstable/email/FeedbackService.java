@@ -1,5 +1,8 @@
 package com.austenconstable.email;
 
+import com.austenconstable.email.team.Team;
+import com.austenconstable.email.team.TeamMember;
+import com.austenconstable.email.team.TeamRestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,24 +20,32 @@ public class FeedbackService
         @Value("${rating.url}")
         private String ratingUrl;
 
-        @Autowired
-        private ColleagueRepository colleagueRepository;
-        @Autowired
-        private EmailFeedbackRequestSender emailSender;
+        private final TeamRestRepository teamRestRepository;
+        private final EmailFeedbackRequestSender emailSender;
 
-        public void processFeedbackRequests(){
-            List<Colleague> colleagues = colleagueRepository.findAll();
+    @Autowired
+    public FeedbackService(TeamRestRepository teamRestRepository, EmailFeedbackRequestSender emailSender)
+        {
+        this.teamRestRepository = teamRestRepository;
+        this.emailSender = emailSender;
+        }
 
-            for (Colleague colleague: colleagues){
+    public void processFeedbackRequests(){
+            List<Team> teams = teamRestRepository.findAll();
 
-                try {
-                    FeedbackRequest request = new FeedbackRequest(colleague.getTeamId(), colleague.getEmail(), viewUrl, ratingUrl);
-                    System.out.println(request);
-                    emailSender.requestFeedback(request);
-                } catch (Exception e) {
-                    System.out.println("email failed to send for: " + colleague.getEmail());
-                    System.out.println(e);
-                }
+            for (Team team: teams){
+                for(TeamMember teamMember:team.getTeamMembers())
+                    {
+                    try
+                        {
+                            FeedbackRequest request = new FeedbackRequest(team.getSlug(), team.getName(), teamMember.getEmail(), viewUrl, ratingUrl);
+                            System.out.println(request);
+                            emailSender.requestFeedback(request);
+                        } catch (Exception e) {
+                            System.out.println("email failed to send for: " + teamMember.getEmail());
+                            System.out.println(e);
+                        }
+                    }
             }
         }
 

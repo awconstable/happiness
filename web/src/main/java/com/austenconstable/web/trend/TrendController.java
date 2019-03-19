@@ -1,7 +1,7 @@
 package com.austenconstable.web.trend;
 
 import com.austenconstable.web.team.Team;
-import com.austenconstable.web.team.TeamRepository;
+import com.austenconstable.web.team.TeamRestRepository;
 import com.google.visualization.datasource.base.TypeMismatchException;
 import com.google.visualization.datasource.datatable.ColumnDescription;
 import com.google.visualization.datasource.datatable.DataTable;
@@ -21,7 +21,6 @@ import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Optional;
 
 
 /**
@@ -30,11 +29,16 @@ import java.util.Optional;
 @Controller
 public class TrendController {
 
-    @Autowired
-    private TrendService trendService;
+    private final TrendService trendService;
+
+    private final TeamRestRepository teamRepository;
 
     @Autowired
-    private TeamRepository teamRepository;
+    public TrendController(TrendService trendService, TeamRestRepository teamRepository)
+        {
+        this.trendService = trendService;
+        this.teamRepository = teamRepository;
+        }
 
     @RequestMapping("/trend/monthly/{team}")
     @ResponseBody
@@ -90,7 +94,7 @@ public class TrendController {
             for (HappinessTrend trend:trends) {
                 TableRow tr = new TableRow();
                 tr.addCell(new TableCell(new DateValue(trend.getTrendDate().getYear(), trend.getTrendDate().getMonth().getValue() - 1, trend.getTrendDate().getDayOfMonth())
-                        , "Week " + Integer.toString(trend.getTrendDate().get(woy)) + ", " + trend.getTrendDate().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
+                        , "Week " + trend.getTrendDate().get(woy) + ", " + trend.getTrendDate().getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
                         + " " + trend.getTrendDate().getYear()));
                 tr.addCell(trend.getAvgHappinessRating());
                 tr.addCell(trend.getResponseCount());
@@ -121,9 +125,12 @@ public class TrendController {
     public String thankyou(Device device, @RequestParam(name="team", required = true) String teamId,
                           @RequestParam(name="rating", required = false) String rating, Model model) throws Exception {
 
-        Optional<Team> team = teamRepository.findByTeamIdIgnoreCase(teamId);
+        Team team = teamRepository.findByTeamSlug(teamId);
 
-        String teamName = team.isPresent() ? team.get().getTeamName() : null;
+        String teamName = null;
+        if(team != null){
+            teamName = team.getName();
+        }
         model.addAttribute("team", teamName);
         model.addAttribute("rating", rating);
 

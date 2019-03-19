@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
@@ -22,9 +21,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class HappinessRepositoryTest {
 
     @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Autowired
     private HappinessRepository repository;
 
     @Before
@@ -32,13 +28,13 @@ public class HappinessRepositoryTest {
 
         List<HappinessRating> ratings = new ArrayList<>();
         ratings.add(new HappinessRating("testid", 3,
-                createDate(2018, Month.JANUARY, 05, 06, 30)));
+                createDate(2018, Month.JANUARY, 5, 6, 30)));
         ratings.add(new HappinessRating("testid", 5,
-                createDate(2018, Month.JANUARY, 29, 06, 30)));
+                createDate(2018, Month.JANUARY, 29, 6, 30)));
         ratings.add(new HappinessRating("fspbm", 1,
-                createDate(2018, Month.FEBRUARY, 18, 06, 30)));
+                createDate(2018, Month.FEBRUARY, 18, 6, 30)));
         ratings.add(new HappinessRating("fspbm", 3,
-                createDate(2018, Month.MARCH, 05, 06, 30)));
+                createDate(2018, Month.MARCH, 5, 6, 30)));
 
         repository.saveAll(ratings);
     }
@@ -72,7 +68,7 @@ public class HappinessRepositoryTest {
     public void findByDateRangeTest() throws Exception {
 
         List<HappinessRating> happinessRatings = repository.findByRatingDateBetween(
-                createDate(2018, Month.JANUARY, 01, 04, 30),
+                createDate(2018, Month.JANUARY, 1, 4, 30),
                 createDate(2018, Month.JANUARY, 30, 22, 30));
 
         assertThat(happinessRatings.size()).isEqualTo(2);
@@ -83,7 +79,7 @@ public class HappinessRepositoryTest {
 
         List<HappinessRating> happinessRatings = repository.findByTeamIdAndRatingDateBetween(
                 "testid",
-                createDate(2018, Month.JANUARY, 01, 04, 30),
+                createDate(2018, Month.JANUARY, 1, 4, 30),
                 createDate(2018, Month.JANUARY, 20, 22, 30));
 
         assertThat(happinessRatings.size()).isEqualTo(1);
