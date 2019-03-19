@@ -3,7 +3,7 @@
 
 Vagrant.configure(2) do |config|
 
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/cosmic64"
 
   config.vm.provider "virtualbox" do |vb|
      vb.gui = true
@@ -12,21 +12,13 @@ Vagrant.configure(2) do |config|
   end
   
   config.vm.provision "shell", inline: <<-SHELL
-    
-    #sudo echo "LANG=en_GB.UTF-8" >> /etc/environment
-    #sudo echo "LANGUAGE=en_GB.UTF-8" >> /etc/environment
-    #sudo echo "LC_ALL=en_GB.UTF-8" >> /etc/environment
-    #sudo echo "LC_CTYPE=en_GB.UTF-8" >> /etc/environment
 
     sudo apt-get install language-pack-en
     sudo locale-gen en_GB.UTF-8
 
-    sudo add-apt-repository -y ppa:webupd8team/java
     sudo apt-get update
     sudo apt-get -y upgrade
-    echo debconf shared/accepted-oracle-license-v1-1 select true | sudo debconf-set-selections 
-    echo debconf shared/accepted-oracle-license-v1-1 seen true | sudo debconf-set-selections
-    sudo apt-get -y install oracle-java8-installer
+    sudo apt-get -y install openjdk-11-jdk
 
     sudo apt-get install -y maven git
 
@@ -45,18 +37,17 @@ Vagrant.configure(2) do |config|
 
     sudo apt-get update
 
-    sudo apt-get -y install docker-ce
+    sudo apt-get -y install docker-ce docker-compose
 
     sudo usermod -aG docker vagrant
 
     sudo apt-get -y autoremove
-
-    docker pull mongo:3.6.8-stretch
 
   SHELL
 
   config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "0.0.0.0", id: "nginx"
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "0.0.0.0", id: "spring_boot"
   config.vm.network "forwarded_port", guest: 8081, host: 8081, host_ip: "0.0.0.0", id: "spring_boot_2"
+  config.vm.network "forwarded_port", guest: 8082, host: 8082, host_ip: "0.0.0.0", id: "spring_boot_3"
   config.vm.network "forwarded_port", guest: 27017, host: 27017, host_ip: "0.0.0.0", id: "mongo_db"
 end
