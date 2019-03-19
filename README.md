@@ -13,34 +13,7 @@ A non-exhaustive list of known limitations:
 ## Dependencies
 
 1. MongoDB
-
-## Quick start guide
-
-### Add a team
-
-```
- curl -H "Content-Type: application/json" -X POST -d '{"teamId": "esrp", "teamName": "Team Name", "platformName": "Platform Name", "domainName": "Domain Name"}' http://localhost:8080/team
-```
-
-### Add team members
-
-```
-curl -H "Content-Type: application/json" -X POST -d '{"teamId": "teamname", "email": "user.email@big.co"}' http://localhost:8080/colleague
-```
-
-### Update team members
-```
-curl -H "Content-Type: application/json" -X PUT -d '{"teamId": "teamname", "email": "user.email@big.co"}' http://localhost/colleague/{itemid}
-```
-### View team members
-
-<http://localhost:8080/colleague>
-
-### Delete a team member
-
-```
-curl -X DELETE http://localhost:8080/colleague/{id}
-```
+2. [https://github.com/awconstable/teamservice]
 
 ### View happiness trends for the last 12 months
 
@@ -65,23 +38,6 @@ mvn clean install
 mvn spring-boot:run -Dspring-boot.run.arguments="--spring.data.mongodb.host=<mongo host>,--spring.data.mongodb.port=<mongo port>,--spring-data.mongodb.database=<mongo db>"
 ```
 
-### Create Docker containers
-
-```
-mvn dockerfile:build dockerfile:tag
-```
-
-### Deploy web docker image from Vagrant to live
-
-```
-docker save team/happiness | bzip2 | ssh <destination host> 'bunzip2 | docker load'
-```
-
-### Deploy email docker image from Vagrant to live
-
-```
-docker save team/happiness-email | bzip2 | ssh <destination host> 'bunzip2 | docker load'
-```
 
 ### Run happiness app
 
@@ -90,11 +46,11 @@ docker save team/happiness-email | bzip2 | ssh <destination host> 'bunzip2 | doc
 ```
 docker stop happiness_app
 docker rm happiness_app
-docker run --name happiness_app -d -p 8080:8080 --network mongonetwork -e spring_data_mongodb_host=<mongo host> -e spring_data_mongodb_port=<mongo port> -e spring_data_mongodb_database=<mongo db> team/happiness:0.0.1-SNAPSHOT
+docker run --name happiness_app -d -p 8080:8080 --network mongonetwork -e spring_data_mongodb_host=<mongo host> -e spring_data_mongodb_port=<mongo port> -e spring_data_mongodb_database=<mongo db> awconstable/teamhappiness:latest
 ```
 
 ### Run happiness emailer - runs via cron
 
 ```
-docker run --rm --name happiness_email --network mongonetwork -e spring_data_mongodb_host=<mongo host> -e spring_data_mongodb_port=<mongo port> -e spring_data_mongodb_database=<mongo db> -e rating_url=<rating url> -e view_url=<view url> -e email_subject="How do you feel?" -e from_email=<from email> -e spring_mail_host=<mail host> team/happiness-email:0.0.1-SNAPSHOT
+docker run --rm --name happiness_email --network mongonetwork -e spring_data_mongodb_host=<mongo host> -e spring_data_mongodb_port=<mongo port> -e spring_data_mongodb_database=<mongo db> -e rating_url=<rating url> -e view_url=<view url> -e email_subject="How do you feel?" -e from_email=<from email> -e spring_mail_host=<mail host> awconstable/teamhappiness-emailer:latest
 ```
