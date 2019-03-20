@@ -27,7 +27,8 @@ public class TeamRestRepository
     private String teamServiceUrl;
 
     public List<Team> findAll() {
-        ResponseEntity<List<Team>> response = restTemplate.exchange(teamServiceUrl + "/team/?size=1000",
+
+        ResponseEntity<List<Team>> response = restTemplate.exchange(teamServiceUrl + "/teams/all",
             HttpMethod.GET,
             null,
             new ParameterizedTypeReference<List<Team>>()
