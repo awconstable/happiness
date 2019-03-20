@@ -34,6 +34,9 @@ public class FeedbackService
             List<Team> teams = teamRestRepository.findAll();
 
             for (Team team: teams){
+                if(team.getTeamMembers() == null){
+                    continue;
+                }
                 for(TeamMember teamMember:team.getTeamMembers())
                     {
                     try
