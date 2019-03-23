@@ -32,10 +32,13 @@ mvn clean install
 
 ### Run in development
 
-*Might be **-Drun.arguments** - see: https://stackoverflow.com/questions/23316843/get-command-line-arguments-from-spring-bootrun*
-
 ```
+#bring up dependencies
+docker-compose up
+#web
 mvn spring-boot:run -Dspring-boot.run.arguments="--spring.data.mongodb.host=<mongo host>,--spring.data.mongodb.port=<mongo port>,--spring-data.mongodb.database=<mongo db>"
+#email
+mvn spring-boot:run -Dspring-boot.run.arguments="--spring.mail.host=<smtp host>,--spring.mail.port=<smtp port>,--team.service.url=<team service url>"
 ```
 
 
