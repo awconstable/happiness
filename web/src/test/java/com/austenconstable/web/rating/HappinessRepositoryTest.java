@@ -25,16 +25,16 @@ public class HappinessRepositoryTest {
 
     @Before
     public void setUp() {
-
+        //TODO this needs setting up properly so that the date remains valid for the 12 month trend window
         List<HappinessRating> ratings = new ArrayList<>();
-        ratings.add(new HappinessRating("testid", 3,
-                createDate(2018, Month.JANUARY, 5, 6, 30)));
-        ratings.add(new HappinessRating("testid", 5,
-                createDate(2018, Month.JANUARY, 29, 6, 30)));
-        ratings.add(new HappinessRating("fspbm", 1,
-                createDate(2018, Month.FEBRUARY, 18, 6, 30)));
-        ratings.add(new HappinessRating("fspbm", 3,
-                createDate(2018, Month.MARCH, 5, 6, 30)));
+        ratings.add(new HappinessRating("testid1", 3,
+                createDate(2019, Month.JANUARY, 5, 6, 30)));
+        ratings.add(new HappinessRating("testid1", 5,
+                createDate(2019, Month.JANUARY, 29, 6, 30)));
+        ratings.add(new HappinessRating("testid2", 1,
+                createDate(2019, Month.FEBRUARY, 18, 6, 30)));
+        ratings.add(new HappinessRating("testid2", 3,
+                createDate(2019, Month.MARCH, 5, 6, 30)));
 
         repository.saveAll(ratings);
     }
@@ -51,7 +51,7 @@ public class HappinessRepositoryTest {
     @Test
     public void findByTeamIdTest() throws Exception {
 
-        List<HappinessRating> happinessRatings = repository.findByTeamIdIgnoreCase("fspbm");
+        List<HappinessRating> happinessRatings = repository.findByTeamIdIgnoreCase("testid2");
 
         assertThat(happinessRatings.size()).isEqualTo(2);
     }
@@ -68,8 +68,8 @@ public class HappinessRepositoryTest {
     public void findByDateRangeTest() throws Exception {
 
         List<HappinessRating> happinessRatings = repository.findByRatingDateBetween(
-                createDate(2018, Month.JANUARY, 1, 4, 30),
-                createDate(2018, Month.JANUARY, 30, 22, 30));
+                createDate(2019, Month.JANUARY, 1, 4, 30),
+                createDate(2019, Month.JANUARY, 30, 22, 30));
 
         assertThat(happinessRatings.size()).isEqualTo(2);
     }
@@ -78,10 +78,19 @@ public class HappinessRepositoryTest {
     public void findByTeamIdAndDateRangeTest() throws Exception {
 
         List<HappinessRating> happinessRatings = repository.findByTeamIdAndRatingDateBetween(
-                "testid",
-                createDate(2018, Month.JANUARY, 1, 4, 30),
-                createDate(2018, Month.JANUARY, 20, 22, 30));
+                "testid1",
+                createDate(2019, Month.JANUARY, 1, 4, 30),
+                createDate(2019, Month.JANUARY, 20, 22, 30));
 
         assertThat(happinessRatings.size()).isEqualTo(1);
+    }
+
+    //TODO WARNING this will fail in the future due to the repository method only looking at the last 12 months
+    @Test
+    public void getWeeklyChildTrendTest(){
+
+        List<HappinessWeeklyTrend> trends = repository.getWeeklyChildTrend("testid1", new String[] { "testid2"});
+
+        assertThat(trends.size()).isEqualTo(4);
     }
 }

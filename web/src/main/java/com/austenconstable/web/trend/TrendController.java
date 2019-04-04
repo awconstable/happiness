@@ -1,7 +1,16 @@
 package com.austenconstable.web.trend;
 
+import be.ceau.chart.color.Color;
+import be.ceau.chart.data.LineData;
+import be.ceau.chart.dataset.LineDataset;
+import com.austenconstable.web.rating.HappinessRepository;
+import com.austenconstable.web.rating.HappinessWeeklyTrend;
 import com.austenconstable.web.team.Team;
+import com.austenconstable.web.team.TeamRelation;
 import com.austenconstable.web.team.TeamRestRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.google.visualization.datasource.base.TypeMismatchException;
 import com.google.visualization.datasource.datatable.ColumnDescription;
 import com.google.visualization.datasource.datatable.DataTable;
@@ -11,15 +20,24 @@ import com.google.visualization.datasource.datatable.value.DateValue;
 import com.google.visualization.datasource.datatable.value.ValueType;
 import com.google.visualization.datasource.render.JsonRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -33,11 +51,14 @@ public class TrendController {
 
     private final TeamRestRepository teamRepository;
 
+    private final HappinessRepository happinessRepository;
+
     @Autowired
-    public TrendController(TrendService trendService, TeamRestRepository teamRepository)
+    public TrendController(TrendService trendService, TeamRestRepository teamRepository, HappinessRepository happinessRepository)
         {
         this.trendService = trendService;
         this.teamRepository = teamRepository;
+        this.happinessRepository = happinessRepository;
         }
 
     @RequestMapping("/trend/monthly/{team}")
@@ -144,5 +165,128 @@ public class TrendController {
 
         return "trendgraph";
     }
+
+ private  LineDataset createTrendDataSet(String dataSetName, ArrayList<Double> data, Color colour, boolean child){
+     LineDataset dataset = new LineDataset().setLabel(dataSetName);
+     data.forEach(dataset::addData);
+     dataset.setFill(false);
+     dataset.setBorderColor(colour);
+     dataset.setBorderWidth(2);
+     ArrayList<Color> pointsColors = new ArrayList<>();
+     pointsColors.add(colour);
+     dataset.setPointBackgroundColor(pointsColors);
+    if(child)
+     {
+     dataset.setBorderDash(new ArrayList<Integer>(Arrays.asList(new Integer[]{5, 5})));
+     }
+     dataset.setYAxisID("y-axis-1");
+     return dataset;
+ }
+
+private  LineDataset createCountDataSet(String dataSetName, ArrayList<Integer> data, Color colour, boolean child){
+    LineDataset dataset = new LineDataset().setLabel(dataSetName);
+    data.forEach(dataset::addData);
+    dataset.setFill(false);
+    dataset.setBorderColor(colour);
+    dataset.setBorderWidth(2);
+    ArrayList<Color> pointsColors = new ArrayList<>();
+    pointsColors.add(colour);
+    dataset.setPointBackgroundColor(pointsColors);
+    if(child)
+        {
+        dataset.setBorderDash(new ArrayList<Integer>(Arrays.asList(new Integer[]{5, 5})));
+        }
+    dataset.setYAxisID("y-axis-2");
+    return dataset;
+}
+
+@GetMapping("/trend/chartjs/weekly/{teamId}")
+@ResponseBody
+public ResponseEntity chartHappinessTrend(Model model, @PathVariable String teamId) throws Exception
+    {
+
+    ArrayList<String> labels = new ArrayList<>();
+    ArrayList<Double> teamTrendData = new ArrayList<>();
+    ArrayList<Integer> teamCountData = new ArrayList<>();
+    ArrayList<Double> childTrendData = new ArrayList<>();
+    ArrayList<Integer> childCountData = new ArrayList<>();
+
+    Team team = teamRepository.findByTeamSlug(teamId);
+
+    if(team == null){
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    ArrayList<String> childTeams = new ArrayList<>();
+
+    for (TeamRelation child : team.getChildren())
+        {
+        childTeams.add(child.getSlug());
+        }
+
+    List<HappinessWeeklyTrend> trends = happinessRepository.getWeeklyChildTrend(teamId, childTeams.toArray(new String[]{}));
+
+    for (HappinessWeeklyTrend trend : trends)
+        {
+        if("child".equals(trend.getTeamId()))
+            {
+            childTrendData.add(trend.getAvg());
+            childCountData.add(trend.getCount());
+            }
+        else {
+            teamTrendData.add(trend.getAvg());
+            teamCountData.add(trend.getCount());
+        }
+        String label = createDataPointLabel(trend.getYear(), trend.getWeek());
+        if(!labels.contains(label))
+            {
+            labels.add(label);
+            }
+        }
+
+    LineDataset teamTrendDataset = createTrendDataSet(team.getName() + " Happiness", teamTrendData, Color.GOLD, false);
+    LineDataset teamCountDataset = createCountDataSet(team.getName() + " Response", teamCountData, Color.GRAY, false);
+    LineDataset childTrendDataset = createTrendDataSet("Child Teams Happiness", childTrendData, Color.GOLD, true);
+    LineDataset childCountDataset = createCountDataSet("Child Teams Response", childCountData, Color.GRAY, true);
+
+    LineData data = new LineData()
+            .addLabels(labels.toArray(new String[]{}))
+            .addDataset(teamTrendDataset)
+            .addDataset(teamCountDataset)
+            .addDataset(childTrendDataset)
+            .addDataset(childCountDataset);
+
+    ObjectWriter writer = new ObjectMapper()
+            .writerWithDefaultPrettyPrinter()
+            .forType(LineData.class);
+
+    try
+        {
+        return new ResponseEntity<>(writer.writeValueAsString(data), HttpStatus.OK);
+        } catch (JsonProcessingException e)
+        {
+        throw new RuntimeException(e);
+        }
+    }
+
+private String createDataPointLabel(int year, int week)
+    {
+
+    WeekFields weekFields = WeekFields.of(Locale.getDefault());
+    LocalDateTime date = LocalDateTime.now().withYear(year)
+            .with(weekFields.weekOfYear(), week + 1)
+            .with(weekFields.dayOfWeek(), 7)
+            .withHour(0)
+            .withMinute(0)
+            .withSecond(0)
+            .withNano(0);
+
+    ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
+
+    ZonedDateTime zonedDateTime = ZonedDateTime.of(date, ZoneId.of("Europe/London"));
+
+    return zonedDateTime.format(DateTimeFormatter.ISO_INSTANT);
+    }
+
 
 }

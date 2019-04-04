@@ -73,6 +73,53 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>be.ceau</groupId>
+            <artifactId>chart</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.3.1-2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>4.3.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator</artifactId>
+            <version>0.36</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>popper.js</artifactId>
+            <version>1.14.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>feather-icons</artifactId>
+            <version>4.7.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>chartjs</artifactId>
+            <version>2.7.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>moment</artifactId>
+            <version>2.24.0</version>
+        </dependency>
     </dependencies>
 
     <build>

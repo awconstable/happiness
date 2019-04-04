@@ -10,7 +10,7 @@ import java.util.List;
  * Created by awconstable on 13/12/2017.
  */
 @RepositoryRestResource(collectionResourceRel = "happiness", path = "happiness")
-public interface HappinessRepository extends MongoRepository<HappinessRating, String>
+public interface HappinessRepository extends MongoRepository<HappinessRating, String>, HappinessAggregationRepository
     {
         List<HappinessRating> findByTeamIdIgnoreCase(String teamId);
 
