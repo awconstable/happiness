@@ -35,10 +35,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 
 /**
@@ -166,9 +163,9 @@ public class TrendController {
         return "trendgraph";
     }
 
- private  LineDataset createTrendDataSet(String dataSetName, ArrayList<Double> data, Color colour, boolean child){
+ private  LineDataset createTrendDataSet(String dataSetName, HashMap<String, Double> data, Color colour, boolean child){
      LineDataset dataset = new LineDataset().setLabel(dataSetName);
-     data.forEach(dataset::addData);
+     data.values().forEach(dataset::addData);
      dataset.setFill(false);
      dataset.setBorderColor(colour);
      dataset.setBorderWidth(2);
@@ -183,9 +180,9 @@ public class TrendController {
      return dataset;
  }
 
-private  LineDataset createCountDataSet(String dataSetName, ArrayList<Integer> data, Color colour, boolean child){
+private  LineDataset createCountDataSet(String dataSetName, HashMap<String, Integer> data, Color colour, boolean child){
     LineDataset dataset = new LineDataset().setLabel(dataSetName);
-    data.forEach(dataset::addData);
+    data.values().forEach(dataset::addData);
     dataset.setFill(false);
     dataset.setBorderColor(colour);
     dataset.setBorderWidth(2);
@@ -206,10 +203,10 @@ public ResponseEntity chartHappinessTrend(Model model, @PathVariable String team
     {
 
     ArrayList<String> labels = new ArrayList<>();
-    ArrayList<Double> teamTrendData = new ArrayList<>();
-    ArrayList<Integer> teamCountData = new ArrayList<>();
-    ArrayList<Double> childTrendData = new ArrayList<>();
-    ArrayList<Integer> childCountData = new ArrayList<>();
+    HashMap<String, Double> teamTrendData = new HashMap<>();
+    HashMap<String, Integer> teamCountData = new HashMap<>();
+    HashMap<String, Double> childTrendData = new HashMap<>();
+    HashMap<String, Integer> childCountData = new HashMap<>();
 
     Team team = teamRepository.findByTeamSlug(teamId);
 
@@ -226,21 +223,33 @@ public ResponseEntity chartHappinessTrend(Model model, @PathVariable String team
 
     List<HappinessWeeklyTrend> trends = happinessRepository.getWeeklyChildTrend(teamId, childTeams.toArray(new String[]{}));
 
-    for (HappinessWeeklyTrend trend : trends)
-        {
-        if("child".equals(trend.getTeamId()))
-            {
-            childTrendData.add(trend.getAvg());
-            childCountData.add(trend.getCount());
-            }
-        else {
-            teamTrendData.add(trend.getAvg());
-            teamCountData.add(trend.getCount());
-        }
+    for (HappinessWeeklyTrend trend : trends){
         String label = createDataPointLabel(trend.getYear(), trend.getWeek());
         if(!labels.contains(label))
+        {
+        labels.add(label);
+        }
+    }
+
+    for(String label:labels){
+        teamTrendData.put(label, (double) 0);
+        teamCountData.put(label, 0);
+        childTrendData.put(label, (double) 0);
+        childCountData.put(label, 0);
+    }
+
+    for (HappinessWeeklyTrend trend : trends)
+        {
+        String label = createDataPointLabel(trend.getYear(), trend.getWeek());
+
+        if ("child".equals(trend.getTeamId()))
             {
-            labels.add(label);
+            childTrendData.put(label, trend.getAvg());
+            childCountData.put(label, trend.getCount());
+            } else
+            {
+            teamTrendData.put(label, trend.getAvg());
+            teamCountData.put(label, trend.getCount());
             }
         }
 
