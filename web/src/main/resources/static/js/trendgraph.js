@@ -9,27 +9,6 @@ $.urlParam = function(name){
     }
 };
 
-var showTable;
-
-if($.urlParam == null || !$.urlParam('table') || $.urlParam('table') === 'false'){
-    showTable = false;
-} else {
-    showTable = true;
-}
-
-console.log(showTable);
-
-google.charts.load('current', {'packages':['line', 'table']});
-google.charts.setOnLoadCallback(loadChart);
-
-var team;
-
-if($.urlParam == null || !$.urlParam('team')){
-    team = 'all';
-} else {
-    team = $.urlParam('team');
-}
-
 function loadChartData(url, slug) {
     return $.ajax({
         url: url + slug + "/",
@@ -37,42 +16,13 @@ function loadChartData(url, slug) {
     });
 }
 
-function loadChart() {
-    loadChartData("/trend/weekly/", team).done(drawChart);
-    if(showTable){
-        console.log('showTable');
-        loadChartData("/trend/weekly/", team).done(drawTable);
-    }
+function loadChart(team) {
     loadChartData("/trend/chartjs/weekly/", team).done(drawHappinessChart);
 }
 
-function drawChart(data) {
-
-    var dataTable = new google.visualization.DataTable(data);
-
-    var options = {
-        chart: {
-            title: 'Team Happiness',
-            subtitle: 'average happiness over time'
-        },
-        width: 900,
-        height: 500,
-        series: {
-            // Gives each series an axis name that matches the Y-axis below.
-            0: {targetAxisIndex: 0},
-            1: {targetAxisIndex: 1}
-        },
-        vAxes: {
-            // Adds titles to each axis.
-            0: {title: 'Happiness (avg)', viewWindow:{max: 5, min: 0}},
-            1: {title: 'Responses', viewWindow:{min: 0}, gridlines:{color: '#f2f2f2'}}
-        },
-        colors:['orange','grey']
-    };
-
-    var chart = new google.charts.Line(document.getElementById('linechart_material'));
-
-    chart.draw(dataTable, google.charts.Line.convertOptions(options));
+function loadTable(team){
+    console.log('showTable');
+    loadChartData("/trend/weekly/", team).done(drawTable);
 }
 
 function drawTable(data) {
@@ -84,7 +34,20 @@ function drawTable(data) {
     table.draw(dataTable);
 }
 
+var team;
+
 $(document).ready(function(){
+
+    var showTable = !($.urlParam == null || !$.urlParam('table') || $.urlParam('table') === 'false');
+
+    console.log(showTable);
+
+    if($.urlParam == null || !$.urlParam('team')){
+        team = 'all';
+    } else {
+        team = $.urlParam('team');
+    }
+
     if($.urlParam('success') === "true") {
         toastr.options = {
             "positionClass": "toast-top-full-width",
@@ -92,6 +55,12 @@ $(document).ready(function(){
         };
         toastr.success('Thank you for your submission');
     }
+    
+    if(showTable) {
+        google.charts.load('current', {'packages': ['table']});
+        google.charts.setOnLoadCallback(loadTable(team));
+    }
+    loadChart(team);
 });
 
 function getChartConfig(data, title, yAxisLabel1, yAxisLabel2) {
