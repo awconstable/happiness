@@ -203,10 +203,10 @@ public ResponseEntity chartHappinessTrend(Model model, @PathVariable String team
     {
 
     ArrayList<String> labels = new ArrayList<>();
-    HashMap<String, Double> teamTrendData = new HashMap<>();
-    HashMap<String, Integer> teamCountData = new HashMap<>();
-    HashMap<String, Double> childTrendData = new HashMap<>();
-    HashMap<String, Integer> childCountData = new HashMap<>();
+    LinkedHashMap<String, Double> teamTrendData = new LinkedHashMap<>();
+    LinkedHashMap<String, Integer> teamCountData = new LinkedHashMap<>();
+    LinkedHashMap<String, Double> childTrendData = new LinkedHashMap<>();
+    LinkedHashMap<String, Integer> childCountData = new LinkedHashMap<>();
 
     Team team = teamRepository.findByTeamSlug(teamId);
 

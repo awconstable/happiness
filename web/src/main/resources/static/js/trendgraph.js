@@ -23,6 +23,7 @@ function loadChart(team) {
 function loadTable(team){
     console.log('showTable');
     loadChartData("/trend/weekly/", team).done(drawTable);
+    loadChartData("/trend/chartjs/weekly/", team).done(drawChartJsTable);
 }
 
 function drawTable(data) {
@@ -34,6 +35,31 @@ function drawTable(data) {
     table.draw(dataTable);
 }
 
+function drawChartJsTable(data){
+    var tableBodyElem = $('#table-body');
+    var html = '<thead><tr><th style="width:120px;">Week</th>';
+
+    var columnCount = 0;
+    jQuery.each(data.datasets, function (idx, item) {
+        html += '<th style="background-color:' + item.fillColor + ';">' + item.label + '</th>';
+        columnCount += 1;
+    });
+
+    html += '</tr></thead>';
+
+    jQuery.each(data.labels, function (idx, item) {
+        html += '<tr><td>' + moment(item).format('[Week] W, MMM YYYY') + '</td>';
+        for (i = 0; i < columnCount; i++) {
+            html += '<td style="background-color:' + data.datasets[i].fillColor + ';">' + (data.datasets[i].data[idx] === '0' ? '-' : data.datasets[i].data[idx].toFixed(2)) + '</td>';
+        }
+        html += '</tr>';
+    });
+
+    html += '</tr><tbody>';
+
+    tableBodyElem.append(html);
+}
+
 var team;
 
 $(document).ready(function(){
@@ -41,6 +67,8 @@ $(document).ready(function(){
     var showTable = !($.urlParam == null || !$.urlParam('table') || $.urlParam('table') === 'false');
 
     console.log(showTable);
+
+    feather.replace();
 
     if($.urlParam == null || !$.urlParam('team')){
         team = 'all';
@@ -106,7 +134,7 @@ function getChartConfig(data, title, yAxisLabel1, yAxisLabel2) {
                     type: 'time',
                     time: {
                         unit: 'week',
-                        tooltipFormat: 'll',
+                        tooltipFormat: '[Week] W, MMM YYYY',
                         min: moment().year(moment().year() - 1)
                     }
                 }]
