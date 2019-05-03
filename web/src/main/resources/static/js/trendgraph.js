@@ -32,25 +32,25 @@ function drawVisualisation(data){
 function drawChartJsTable(data){
     var tableBodyElem = $('#table-body');
     tableBodyElem.empty();
-    var html = '<thead><tr><th style="width:120px;">Week</th>';
+    var html = '<thead><tr><th scope="col">Week</th>';
 
     var columnCount = 0;
     jQuery.each(data.datasets, function (idx, item) {
-        html += '<th style="background-color:' + item.fillColor + ';">' + item.label + '</th>';
+        html += '<th scope="col" style="border-color:' + item.borderColor + ';">' + item.label + '</th>';
         columnCount += 1;
     });
 
-    html += '</tr></thead>';
+    html += '</tr></thead><tbody>';
 
     jQuery.each(data.labels, function (idx, item) {
-        html += '<tr><td>' + moment(item).format('[Week] W, MMM YYYY') + '</td>';
+        html += '<tr><th scope="row">' + moment(item).format('[Week] W, MMM YYYY') + '</th>';
         for (i = 0; i < columnCount; i++) {
             html += '<td style="background-color:' + data.datasets[i].fillColor + ';">' + (data.datasets[i].data[idx] === '0' ? '-' : data.datasets[i].data[idx]) + '</td>';
         }
         html += '</tr>';
     });
 
-    html += '</tr><tbody>';
+    html += '</tr></tbody>';
 
     tableBodyElem.append(html);
 }
