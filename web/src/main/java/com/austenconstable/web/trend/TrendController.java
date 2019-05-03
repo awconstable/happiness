@@ -58,6 +58,7 @@ public class TrendController {
         this.happinessRepository = happinessRepository;
         }
 
+    @Deprecated
     @RequestMapping("/trend/monthly/{team}")
     @ResponseBody
     public String rollingMonthlyTrend(Model model, @PathVariable String team) {
@@ -92,6 +93,7 @@ public class TrendController {
 
     }
 
+    @Deprecated
     @RequestMapping("/trend/weekly/{team}")
     @ResponseBody
     public String rollingWeeklyTrend(Model model, @PathVariable String team) {
@@ -136,6 +138,11 @@ public class TrendController {
             return "thankyou";
         }
 
+        return "trendgraph";
+    }
+
+    @GetMapping("/chart")
+    public String chart() throws Exception {
         return "trendgraph";
     }
 
