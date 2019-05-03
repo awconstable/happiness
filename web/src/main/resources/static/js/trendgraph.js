@@ -17,22 +17,13 @@ function loadChartData(url, slug) {
 }
 
 function loadChart(team) {
-    loadChartData("/trend/chartjs/weekly/", team).done(drawHappinessChart);
+    loadChartData("/trend/chartjs/weekly/", team).done(drawVisualisation);
 }
 
-function loadTable(team){
-    console.log('showTable');
-    loadChartData("/trend/weekly/", team).done(drawTable);
-    loadChartData("/trend/chartjs/weekly/", team).done(drawChartJsTable);
-}
-
-function drawTable(data) {
-
-    var dataTable = new google.visualization.DataTable(data);
-
-    var table = new google.visualization.Table(document.getElementById('table'));
-
-    table.draw(dataTable);
+function drawVisualisation(data){
+    //TODO round averages
+    drawHappinessChart(data);
+    drawChartJsTable(data);
 }
 
 function drawChartJsTable(data){
@@ -64,10 +55,6 @@ var team;
 
 $(document).ready(function(){
 
-    var showTable = !($.urlParam == null || !$.urlParam('table') || $.urlParam('table') === 'false');
-
-    console.log(showTable);
-
     feather.replace();
 
     if($.urlParam == null || !$.urlParam('team')){
@@ -83,11 +70,7 @@ $(document).ready(function(){
         };
         toastr.success('Thank you for your submission');
     }
-    
-    if(showTable) {
-        google.charts.load('current', {'packages': ['table']});
-        google.charts.setOnLoadCallback(loadTable(team));
-    }
+
     loadChart(team);
 });
 
@@ -122,7 +105,7 @@ function getChartConfig(data, title, yAxisLabel1, yAxisLabel2) {
                     type: "linear",
                     ticks: {
                         beginAtZero: true,
-                        stepSize: 1
+                        precision: 0
                     },
                     position: "right",
                     id: "y-axis-2",
