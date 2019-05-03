@@ -255,8 +255,8 @@ public ResponseEntity chartHappinessTrend(Model model, @PathVariable String team
 
     LineDataset teamTrendDataset = createTrendDataSet(team.getName() + " Happiness", teamTrendData, Color.GOLD, false);
     LineDataset teamCountDataset = createCountDataSet(team.getName() + " Response", teamCountData, Color.GRAY, false);
-    LineDataset childTrendDataset = createTrendDataSet("Child Teams Happiness", childTrendData, Color.GOLD, true);
-    LineDataset childCountDataset = createCountDataSet("Child Teams Response", childCountData, Color.GRAY, true);
+    LineDataset childTrendDataset = createTrendDataSet("Child Teams Happiness", childTrendData, Color.KHAKI, true);
+    LineDataset childCountDataset = createCountDataSet("Child Teams Response", childCountData, Color.LIGHT_GRAY, true);
 
     LineData data = new LineData()
             .addLabels(labels.toArray(new String[]{}))
