@@ -25,7 +25,6 @@ function loadChart(team) {
 }
 
 function drawVisualisation(data){
-    //TODO round averages
     drawHappinessChart(data);
     drawChartJsTable(data);
 }
@@ -45,7 +44,7 @@ function drawChartJsTable(data){
     jQuery.each(data.labels, function (idx, item) {
         html += '<tr><td>' + moment(item).format('[Week] W, MMM YYYY') + '</td>';
         for (i = 0; i < columnCount; i++) {
-            html += '<td style="background-color:' + data.datasets[i].fillColor + ';">' + (data.datasets[i].data[idx] === '0' ? '-' : data.datasets[i].data[idx].toFixed(2)) + '</td>';
+            html += '<td style="background-color:' + data.datasets[i].fillColor + ';">' + (data.datasets[i].data[idx] === '0' ? '-' : data.datasets[i].data[idx]) + '</td>';
         }
         html += '</tr>';
     });

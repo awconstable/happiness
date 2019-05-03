@@ -27,6 +27,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -57,6 +59,14 @@ public class TrendController {
         this.teamRepository = teamRepository;
         this.happinessRepository = happinessRepository;
         }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 
     @Deprecated
     @RequestMapping("/trend/monthly/{team}")
@@ -251,11 +261,11 @@ public ResponseEntity chartHappinessTrend(Model model, @PathVariable String team
 
         if ("child".equals(trend.getTeamId()))
             {
-            childTrendData.put(label, trend.getAvg());
+            childTrendData.put(label, round(trend.getAvg(),2));
             childCountData.put(label, trend.getCount());
             } else
             {
-            teamTrendData.put(label, trend.getAvg());
+            teamTrendData.put(label, round(trend.getAvg(),2));
             teamCountData.put(label, trend.getCount());
             }
         }
