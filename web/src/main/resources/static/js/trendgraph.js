@@ -31,6 +31,7 @@ function drawVisualisation(data){
 
 function drawChartJsTable(data){
     var tableBodyElem = $('#table-body');
+    tableBodyElem.empty();
     var html = '<thead><tr><th style="width:120px;">Week</th>';
 
     var columnCount = 0;
