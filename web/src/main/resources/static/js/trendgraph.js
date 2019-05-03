@@ -9,6 +9,10 @@ $.urlParam = function(name){
     }
 };
 
+$("#happiness-refresh-button").click(function () {
+    loadChart(team);
+});
+
 function loadChartData(url, slug) {
     return $.ajax({
         url: url + slug + "/",
