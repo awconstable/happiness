@@ -33,3 +33,5 @@ target
 # Vagrant
 .vagrant
 data
+
+.aws
