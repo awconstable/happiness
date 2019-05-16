@@ -99,7 +99,7 @@ function getChartConfig(data, title, yAxisLabel1, yAxisLabel2) {
                         min: 0,
                         max: 5
                     },
-                    position: "left",
+                    position: "right",
                     id: "y-axis-1"
                 },{
                     scaleLabel: {
@@ -111,7 +111,7 @@ function getChartConfig(data, title, yAxisLabel1, yAxisLabel2) {
                         beginAtZero: true,
                         precision: 0
                     },
-                    position: "right",
+                    position: "left",
                     id: "y-axis-2",
                     gridLines: {
                         drawOnChartArea: false
