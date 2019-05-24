@@ -3,6 +3,7 @@ package com.austenconstable.web.trend;
 import be.ceau.chart.color.Color;
 import be.ceau.chart.data.LineData;
 import be.ceau.chart.dataset.LineDataset;
+import be.ceau.chart.options.elements.Fill;
 import com.austenconstable.web.rating.HappinessRepository;
 import com.austenconstable.web.rating.HappinessWeeklyTrend;
 import com.austenconstable.web.team.Team;
@@ -183,7 +184,7 @@ public class TrendController {
  private  LineDataset createTrendDataSet(String dataSetName, HashMap<String, Double> data, Color colour, boolean child){
      LineDataset dataset = new LineDataset().setLabel(dataSetName);
      data.values().forEach(dataset::addData);
-     dataset.setFill(false);
+     dataset.setFill(new Fill(false));
      dataset.setBorderColor(colour);
      dataset.setBorderWidth(2);
      ArrayList<Color> pointsColors = new ArrayList<>();
@@ -198,9 +199,10 @@ public class TrendController {
  }
 
 private  LineDataset createCountDataSet(String dataSetName, HashMap<String, Integer> data, Color colour, boolean child){
+
     LineDataset dataset = new LineDataset().setLabel(dataSetName);
     data.values().forEach(dataset::addData);
-    dataset.setFill(false);
+    dataset.setFill(new Fill(false));
     dataset.setBorderColor(colour);
     dataset.setBorderWidth(2);
     ArrayList<Color> pointsColors = new ArrayList<>();
