@@ -1,7 +1,12 @@
-# happiness
+# Team Happiness Meter
 A proof of concept team happiness meter
 
 Employee happiness is important, this application provides a simple method of capturing happiness ratings over time
+
+[![CircleCI](https://circleci.com/gh/awconstable/happiness.svg?style=shield)](https://circleci.com/gh/awconstable/happiness)
+[![codecov](https://codecov.io/gh/awconstable/happiness/branch/master/graph/badge.svg)](https://codecov.io/gh/awconstable/happiness)
+[![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/awconstable/happiness.svg)](https://libraries.io/github/awconstable/happiness)
+[![dockerhub](https://img.shields.io/docker/pulls/awconstable/teamhappiness.svg)](https://cloud.docker.com/repository/docker/awconstable/teamhappiness)
 
 ## Limitations
 
@@ -13,7 +18,7 @@ A non-exhaustive list of known limitations:
 ## Dependencies
 
 1. MongoDB
-2. [https://github.com/awconstable/teamservice]
+2. [Team Service](https://github.com/awconstable/teamservice)
 
 ### View happiness trends for the last 12 months
 
@@ -49,6 +54,7 @@ mvn spring-boot:run -Dspring-boot.run.arguments="--spring.mail.host=<smtp host>,
 ```
 docker stop happiness_app
 docker rm happiness_app
+docker pull awconstable/teamhappiness
 docker run --name happiness_app -d -p 8080:8080 --network mongonetwork -e spring_data_mongodb_host=<mongo host> -e spring_data_mongodb_port=<mongo port> -e spring_data_mongodb_database=<mongo db> awconstable/teamhappiness:latest
 ```
 
