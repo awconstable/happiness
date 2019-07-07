@@ -1,9 +1,9 @@
-# Java Maven CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-java/ for more details
-#
+version: 2.1
+
+orbs:
+  codecov: codecov/codecov@1.0.2
+
 workflows:
-  version: 2
   build-deploy:
     jobs:
       - unit-test:
@@ -19,7 +19,6 @@ workflows:
             branches:
               only: master
 
-version: 2
 jobs:
   unit-test:
     docker:
@@ -49,7 +48,24 @@ jobs:
           key: v1-dependencies-{{ checksum "pom.xml" }}-{{ checksum "email/pom.xml" }}-{{ checksum "web/pom.xml" }}
 
       # run tests!
-      - run: mvn integration-test
+      - run: mvn test integration-test verify
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+            find . -type f -regex ".*/target/failsafe-reports/.*xml" -exec cp {} ~/test-results/junit/ \;
+            mkdir -p ~/test-results/jacoco/
+            find . -type f -regex ".*/target/jacoco-reports/.*xml" -exec cp {} ~/test-results/jacoco/ \;
+          when: always
+      - store_test_results:
+          path: ~/test-results
+      - store_artifacts:
+          path: ~/test-results
+      - store_artifacts:
+          path: web/target/jacoco-reports
+      - codecov/upload:
+          file: ~/test-results/jacoco/jacoco.xml
 
   publish-docker:
     docker:
