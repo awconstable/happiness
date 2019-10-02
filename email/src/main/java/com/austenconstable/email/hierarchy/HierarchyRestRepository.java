@@ -1,4 +1,4 @@
-package com.austenconstable.web.team;
+package com.austenconstable.email.hierarchy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,13 +12,13 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Repository
-public class TeamRestRepository
+public class HierarchyRestRepository
     {
 
     private RestTemplate restTemplate;
 
     @Autowired
-    public TeamRestRepository(RestTemplateBuilder builder)
+    public HierarchyRestRepository(RestTemplateBuilder builder)
         {
         this.restTemplate = builder.build();
         }
@@ -26,18 +26,13 @@ public class TeamRestRepository
     @Value("${team.service.url}")
     private String teamServiceUrl;
 
-    public Team findByTeamSlug(String slug)
-        {
-        return restTemplate.getForObject(teamServiceUrl + "/teams/relatives/" + slug, Team.class);
-        }
-
-    public List<TeamRelation> findHierarchy()
+    public List<HierarchyEntity> findAll()
         {
 
-        ResponseEntity<List<TeamRelation>> response = restTemplate.exchange(teamServiceUrl + "/teams/hierarchy/all",
+        ResponseEntity<List<HierarchyEntity>> response = restTemplate.exchange(teamServiceUrl + "/v2/hierarchy/all",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<TeamRelation>>()
+                new ParameterizedTypeReference<List<HierarchyEntity>>()
                     {
                     });
 

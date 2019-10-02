@@ -1,11 +1,11 @@
-package com.austenconstable.web.team;
+package com.austenconstable.email.hierarchy;
 
-public class TeamMember
+public class Member
     {
     private final String email;
     private final String name;
 
-    public TeamMember(String email, String name)
+    public Member(String email, String name)
         {
         this.email = email;
         this.name = name;

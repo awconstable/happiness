@@ -4,11 +4,11 @@ import be.ceau.chart.color.Color;
 import be.ceau.chart.data.LineData;
 import be.ceau.chart.dataset.LineDataset;
 import be.ceau.chart.options.elements.Fill;
+import com.austenconstable.web.hierarchy.HierarchyEntity;
+import com.austenconstable.web.hierarchy.HierarchyRestRepository;
+import com.austenconstable.web.hierarchy.Relation;
 import com.austenconstable.web.rating.HappinessRepository;
 import com.austenconstable.web.rating.HappinessWeeklyTrend;
-import com.austenconstable.web.team.Team;
-import com.austenconstable.web.team.TeamRelation;
-import com.austenconstable.web.team.TeamRestRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -49,15 +49,15 @@ public class TrendController {
 
     private final TrendService trendService;
 
-    private final TeamRestRepository teamRepository;
+    private final HierarchyRestRepository hierarchyRestRepository;
 
     private final HappinessRepository happinessRepository;
 
     @Autowired
-    public TrendController(TrendService trendService, TeamRestRepository teamRepository, HappinessRepository happinessRepository)
+    public TrendController(TrendService trendService, HierarchyRestRepository hierarchyRestRepository, HappinessRepository happinessRepository)
         {
         this.trendService = trendService;
-        this.teamRepository = teamRepository;
+        this.hierarchyRestRepository = hierarchyRestRepository;
         this.happinessRepository = happinessRepository;
         }
 
@@ -161,7 +161,7 @@ public class TrendController {
     public String thankyou(Device device, @RequestParam(name="team", required = true) String teamId,
                           @RequestParam(name="rating", required = false) String rating, Model model) throws Exception {
 
-        Team team = teamRepository.findByTeamSlug(teamId);
+        HierarchyEntity team = hierarchyRestRepository.findEntityBySlug(teamId);
 
         String teamName = null;
         if(team != null){
@@ -227,7 +227,7 @@ public ResponseEntity chartHappinessTrend(Model model, @PathVariable String team
     LinkedHashMap<String, Double> childTrendData = new LinkedHashMap<>();
     LinkedHashMap<String, Integer> childCountData = new LinkedHashMap<>();
 
-    Team team = teamRepository.findByTeamSlug(teamId);
+    HierarchyEntity team = hierarchyRestRepository.findEntityBySlug(teamId);
 
     if(team == null){
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -235,7 +235,7 @@ public ResponseEntity chartHappinessTrend(Model model, @PathVariable String team
 
     ArrayList<String> childTeams = new ArrayList<>();
 
-    for (TeamRelation child : team.getChildren())
+    for (Relation child : team.getChildren())
         {
         childTeams.add(child.getSlug());
         }
