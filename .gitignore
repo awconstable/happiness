@@ -35,3 +35,9 @@ target
 data
 
 .aws
+
+# VSCode
+.project
+.settings
+.vscode
+.classpath
