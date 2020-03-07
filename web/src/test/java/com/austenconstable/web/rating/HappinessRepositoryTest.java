@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,18 +24,19 @@ public class HappinessRepositoryTest {
     @Autowired
     private HappinessRepository repository;
 
+    private Year year = Year.now();
+
     @Before
     public void setUp() {
-        //TODO this needs setting up properly so that the date remains valid for the 12 month trend window
         List<HappinessRating> ratings = new ArrayList<>();
         ratings.add(new HappinessRating("testid1", 3,
-                createDate(2019, Month.JANUARY, 5, 6, 30)));
+                createDate(year.getValue(), Month.JANUARY, 5, 6, 30)));
         ratings.add(new HappinessRating("testid1", 5,
-                createDate(2019, Month.JANUARY, 29, 6, 30)));
+                createDate(year.getValue(), Month.JANUARY, 29, 6, 30)));
         ratings.add(new HappinessRating("testid2", 1,
-                createDate(2019, Month.FEBRUARY, 18, 6, 30)));
+                createDate(year.getValue(), Month.FEBRUARY, 18, 6, 30)));
         ratings.add(new HappinessRating("testid2", 3,
-                createDate(2019, Month.MARCH, 5, 6, 30)));
+                createDate(year.getValue(), Month.MARCH, 5, 6, 30)));
 
         repository.saveAll(ratings);
     }
@@ -68,8 +70,8 @@ public class HappinessRepositoryTest {
     public void findByDateRangeTest() throws Exception {
 
         List<HappinessRating> happinessRatings = repository.findByRatingDateBetween(
-                createDate(2019, Month.JANUARY, 1, 4, 30),
-                createDate(2019, Month.JANUARY, 30, 22, 30));
+                createDate(year.getValue(), Month.JANUARY, 1, 4, 30),
+                createDate(year.getValue(), Month.JANUARY, 30, 22, 30));
 
         assertThat(happinessRatings.size()).isEqualTo(2);
     }
@@ -79,13 +81,12 @@ public class HappinessRepositoryTest {
 
         List<HappinessRating> happinessRatings = repository.findByTeamIdAndRatingDateBetween(
                 "testid1",
-                createDate(2019, Month.JANUARY, 1, 4, 30),
-                createDate(2019, Month.JANUARY, 20, 22, 30));
+                createDate(year.getValue(), Month.JANUARY, 1, 4, 30),
+                createDate(year.getValue(), Month.JANUARY, 20, 22, 30));
 
         assertThat(happinessRatings.size()).isEqualTo(1);
     }
 
-    //TODO WARNING this will fail in the future due to the repository method only looking at the last 12 months
     @Test
     public void getWeeklyChildTrendTest(){
 
