@@ -35,6 +35,15 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+  prom:
+    container_name: prometheus_container
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - happinessnetwork
+    volumes:
+      - "/vagrant/prometheus.yml:/etc/prometheus/prometheus.yml"
 volumes:
   mongodata:
 networks:

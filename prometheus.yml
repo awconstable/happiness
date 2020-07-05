@@ -1,0 +1,9 @@
+scrape_configs:
+  - job_name: 'teamservice'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['172.17.0.1:8082']
+  - job_name: 'happiness'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['172.17.0.1:8080']
