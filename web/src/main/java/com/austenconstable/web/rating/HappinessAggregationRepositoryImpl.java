@@ -32,7 +32,6 @@ public class HappinessAggregationRepositoryImpl implements HappinessAggregationR
 
         ProjectionOperation dateProjection = project()
                 .and(condOperation).as("teamId")
-                //.and("teamId").as("teamId")
                 .and("happinessRating").as("happinessRating")
                 .and("ratingDate").extractYear().as("year")
                 .and("ratingDate").extractWeek().as("week");

@@ -2,25 +2,20 @@ package com.austenconstable.web.rating;
 
 public class HappinessWeeklyTrend
     {
-    
-    private final String teamId;
+    private final HappinessTrendId id;
     private final Double avg;
     private final Integer count;
-    private final Integer year;
-    private final Integer week;
-
-    public HappinessWeeklyTrend(String teamId, Double avg, Integer count, Integer year, Integer week)
+    
+    public HappinessWeeklyTrend(HappinessTrendId id, Double avg, Integer count)
         {
-        this.teamId = teamId;
+        this.id = id;
         this.avg = avg;
         this.count = count;
-        this.year = year;
-        this.week = week;
         }
 
-    public String getTeamId()
+    public HappinessTrendId getId()
         {
-        return teamId;
+        return id;
         }
 
     public Double getAvg()
@@ -33,25 +28,13 @@ public class HappinessWeeklyTrend
         return count;
         }
 
-    public Integer getYear()
-        {
-        return year;
-        }
-
-    public Integer getWeek()
-        {
-        return week;
-        }
-
     @Override
     public String toString()
         {
         return "HappinessWeeklyTrend{" +
-                "teamId='" + teamId + '\'' +
-                ", avg=" + avg +
-                ", count=" + count +
-                ", year=" + year +
-                ", week=" + week +
-                '}';
+            "id=" + id +
+            ", avg=" + avg +
+            ", count=" + count +
+            '}';
         }
     }

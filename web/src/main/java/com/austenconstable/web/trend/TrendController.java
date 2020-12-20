@@ -243,7 +243,7 @@ public ResponseEntity chartHappinessTrend(Model model, @PathVariable String team
     List<HappinessWeeklyTrend> trends = happinessRepository.getWeeklyChildTrend(teamId, childTeams.toArray(new String[]{}));
 
     for (HappinessWeeklyTrend trend : trends){
-        String label = createDataPointLabel(trend.getYear(), trend.getWeek());
+        String label = createDataPointLabel(trend.getId().getYear(), trend.getId().getWeek());
         if(!labels.contains(label))
         {
         labels.add(label);
@@ -259,9 +259,9 @@ public ResponseEntity chartHappinessTrend(Model model, @PathVariable String team
 
     for (HappinessWeeklyTrend trend : trends)
         {
-        String label = createDataPointLabel(trend.getYear(), trend.getWeek());
+        String label = createDataPointLabel(trend.getId().getYear(), trend.getId().getWeek());
 
-        if ("child".equals(trend.getTeamId()))
+        if ("child".equals(trend.getId().getTeamId()))
             {
             childTrendData.put(label, round(trend.getAvg(),2));
             childCountData.put(label, trend.getCount());

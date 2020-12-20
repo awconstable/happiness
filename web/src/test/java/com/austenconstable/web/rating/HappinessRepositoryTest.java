@@ -92,6 +92,16 @@ public class HappinessRepositoryTest {
 
         List<HappinessWeeklyTrend> trends = repository.getWeeklyChildTrend("testid1", new String[] { "testid2"});
 
+        assertThat(trends.get(0).getId().getTeamId()).isEqualTo("testid1");
         assertThat(trends.size()).isEqualTo(4);
+    }
+
+    @Test
+    public void getWeeklyChildTrendTestNoChild(){
+    
+        List<HappinessWeeklyTrend> trends = repository.getWeeklyChildTrend("testid1", new String[] {});
+
+        assertThat(trends.get(0).getId().getTeamId()).isEqualTo("testid1");
+        assertThat(trends.size()).isEqualTo(2);
     }
 }
