@@ -1,12 +1,12 @@
 package com.austenconstable.web.rating;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -17,7 +17,7 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @DataMongoTest
 public class HappinessRepositoryTest {
 
@@ -26,7 +26,7 @@ public class HappinessRepositoryTest {
 
     private Year year = Year.now();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         List<HappinessRating> ratings = new ArrayList<>();
         ratings.add(new HappinessRating("testid1", 3,
@@ -41,7 +41,7 @@ public class HappinessRepositoryTest {
         repository.saveAll(ratings);
     }
 
-    @After
+    @AfterEach
     public void clearDown() {
         repository.deleteAll();
     }
