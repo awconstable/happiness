@@ -3,6 +3,7 @@ package com.austenconstable.web.hierarchy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class HierarchyEntity
     {
@@ -45,13 +46,33 @@ public class HierarchyEntity
 
     public String getParentSlug() { return parentSlug; }
 
-    public Collection<Relation> getAncestors() { return ancestors; }
+    public Collection<Relation> getAncestors() {
+        if(ancestors == null){
+            return Collections.emptyList();
+        }
+        return ancestors; 
+    }
 
-    public Collection<Relation> getChildren() { return children; }
+    public Collection<Relation> getChildren() {
+        if(children == null){
+            return Collections.emptyList();
+        }
+        return children; 
+    }
 
-    public Collection<Member> getMembers() { return members; }
+    public Collection<Member> getMembers() {
+        if(members == null){
+            return Collections.emptyList();
+        }
+        return members; 
+    }
 
-    public Collection<ApplicationId> getApplicationIds() { return applicationIds; }
+    public Collection<ApplicationId> getApplicationIds() {
+        if(applicationIds == null){
+            return Collections.emptyList();
+        }
+        return applicationIds; 
+    }
 
     @JsonIgnore
     public Relation getRelation() {

@@ -4,8 +4,8 @@ import be.ceau.chart.color.Color;
 import be.ceau.chart.data.LineData;
 import be.ceau.chart.dataset.LineDataset;
 import be.ceau.chart.options.elements.Fill;
+import com.austenconstable.web.hierarchy.HierarchyClient;
 import com.austenconstable.web.hierarchy.HierarchyEntity;
-import com.austenconstable.web.hierarchy.HierarchyRestRepository;
 import com.austenconstable.web.hierarchy.Relation;
 import com.austenconstable.web.rating.HappinessRepository;
 import com.austenconstable.web.rating.HappinessWeeklyTrend;
@@ -49,15 +49,15 @@ public class TrendController {
 
     private final TrendService trendService;
 
-    private final HierarchyRestRepository hierarchyRestRepository;
+    private final HierarchyClient hierarchyClient;
 
     private final HappinessRepository happinessRepository;
 
     @Autowired
-    public TrendController(TrendService trendService, HierarchyRestRepository hierarchyRestRepository, HappinessRepository happinessRepository)
+    public TrendController(TrendService trendService, HierarchyClient hierarchyClient, HappinessRepository happinessRepository)
         {
         this.trendService = trendService;
-        this.hierarchyRestRepository = hierarchyRestRepository;
+        this.hierarchyClient = hierarchyClient;
         this.happinessRepository = happinessRepository;
         }
 
@@ -161,7 +161,7 @@ public class TrendController {
     public String thankyou(Device device, @RequestParam(name="team", required = true) String teamId,
                           @RequestParam(name="rating", required = false) String rating, Model model) throws Exception {
 
-        HierarchyEntity team = hierarchyRestRepository.findEntityBySlug(teamId);
+        HierarchyEntity team = hierarchyClient.findEntityBySlug(teamId);
 
         String teamName = null;
         if(team != null){
@@ -227,7 +227,7 @@ public ResponseEntity chartHappinessTrend(Model model, @PathVariable String team
     LinkedHashMap<String, Double> childTrendData = new LinkedHashMap<>();
     LinkedHashMap<String, Integer> childCountData = new LinkedHashMap<>();
 
-    HierarchyEntity team = hierarchyRestRepository.findEntityBySlug(teamId);
+    HierarchyEntity team = hierarchyClient.findEntityBySlug(teamId);
 
     if(team == null){
         return new ResponseEntity(HttpStatus.BAD_REQUEST);

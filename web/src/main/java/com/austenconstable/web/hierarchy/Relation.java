@@ -1,6 +1,7 @@
 package com.austenconstable.web.hierarchy;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public class Relation
     {
@@ -34,7 +35,12 @@ public class Relation
 
     public String getParentSlug() { return parentSlug; }
 
-    public Collection<Relation> getChildren() { return children; }
+    public Collection<Relation> getChildren() {
+        if(children == null){
+            return Collections.emptyList();
+        }
+        return children; 
+    }
 
     @Override
     public String toString()
