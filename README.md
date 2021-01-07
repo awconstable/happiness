@@ -41,9 +41,9 @@ mvn clean install
 #bring up dependencies
 docker-compose up
 #web
-mvn spring-boot:run -Dspring-boot.run.arguments="--spring.data.mongodb.host=<mongo host>,--spring.data.mongodb.port=<mongo port>,--spring-data.mongodb.database=<mongo db>"
+mvn spring-boot:run -Dspring-boot.run.arguments="--spring.data.mongodb.host=<mongo host> --spring.data.mongodb.port=<mongo port> --spring-data.mongodb.database=<mongo db> --spring.cloud.discovery.enabled=true --spring.cloud.service-registry.auto-registration.enabled=true --spring.cloud.consul.discovery.enabled=true --spring.cloud.consul.host=<consul host> --spring.cloud.consul.discovery.prefer-ip-address=true --spring.cloud.consul.port=<consul port> --spring.cloud.consul.config.enabled=true"
 #email
-mvn spring-boot:run -Dspring-boot.run.arguments="--spring.mail.host=<smtp host>,--spring.mail.port=<smtp port>,--team.service.url=<team service url>"
+mvn spring-boot:run -Dspring-boot.run.arguments="--spring.mail.host=<smtp host> --spring.mail.port=<smtp port> --team.service.url=<team service url>"
 ```
 
 
@@ -55,7 +55,7 @@ mvn spring-boot:run -Dspring-boot.run.arguments="--spring.mail.host=<smtp host>,
 docker stop happiness_app
 docker rm happiness_app
 docker pull awconstable/teamhappiness
-docker run --name happiness_app -d -p 8080:8080 --network mongonetwork -e spring_data_mongodb_host=<mongo host> -e spring_data_mongodb_port=<mongo port> -e spring_data_mongodb_database=<mongo db> awconstable/teamhappiness:latest
+docker run --name happiness_app -d -p 8080:8080 --network mongonetwork -e spring.data.mongodb.host=<mongo host> -e spring.data.mongodb.port=<mongo port> -e spring.data.mongodb.database=<mongo db>  -e spring.cloud.discovery.enabled=true -e spring.cloud.service-registry.auto-registration.enabled=true -e spring.cloud.consul.discovery.enabled=true -e spring.cloud.consul.host=<consul host> -e spring.cloud.consul.discovery.prefer-ip-address=true -e spring.cloud.consul.port=<consul port> -e spring.cloud.consul.config.enabled=true" awconstable/teamhappiness:latest
 ```
 
 ### Run happiness emailer - runs via cron
