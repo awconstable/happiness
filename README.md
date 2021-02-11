@@ -4,6 +4,7 @@ A proof of concept team happiness meter
 Employee happiness is important, this application provides a simple method of capturing happiness ratings over time
 
 [![CircleCI](https://circleci.com/gh/awconstable/happiness.svg?style=shield)](https://circleci.com/gh/awconstable/happiness)
+![CodeQL](https://github.com/awconstable/happiness/workflows/CodeQL/badge.svg)
 [![codecov](https://codecov.io/gh/awconstable/happiness/branch/master/graph/badge.svg)](https://codecov.io/gh/awconstable/happiness)
 [![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/awconstable/happiness.svg)](https://libraries.io/github/awconstable/happiness)
 [![dockerhub](https://img.shields.io/docker/pulls/awconstable/teamhappiness.svg)](https://cloud.docker.com/repository/docker/awconstable/teamhappiness)
