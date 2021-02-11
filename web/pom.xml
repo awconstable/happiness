@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mobile</artifactId>
-            <version>1.5.19.RELEASE</version>
+            <version>1.5.22.RELEASE</version>
         </dependency>
 
         <dependency>
