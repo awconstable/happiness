@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mobile</artifactId>
-            <version>1.5.19.RELEASE</version>
+            <version>1.5.22.RELEASE</version>
         </dependency>
 
         <dependency>
@@ -93,13 +93,13 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>4.5.3</version>
+            <version>4.6.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>webjars-locator</artifactId>
-            <version>0.36</version>
+            <version>0.40</version>
         </dependency>
 
         <dependency>
