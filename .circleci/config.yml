@@ -78,7 +78,7 @@ jobs:
             - v1-dependencies-{{ checksum "pom.xml" }}-{{ checksum "web/pom.xml" }}
             - v1-dependencies-
 
-      - run: mvn dependency:resolve-plugins dependency:go-offline
+      - run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies -Dmaven.repo.local=~/.m2/repository
 
       - run: cp .mvn/wrapper/settings.xml ~/.m2/settings.xml
 
