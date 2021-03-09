@@ -9,6 +9,8 @@ $.urlParam = function(name){
     }
 };
 
+var chart1;
+
 $("#happiness-refresh-button").click(function () {
     loadChart(team);
 });
@@ -18,6 +20,13 @@ function loadChartData(url, slug) {
         url: url + slug + "/",
         dataType: "json"
     });
+}
+
+function clearDownChart(chart){
+    if(chart) {
+        console.log("destroy chart id: " + chart.id);
+        chart.destroy();
+    }
 }
 
 function loadChart(team) {
@@ -133,6 +142,6 @@ function getChartConfig(data, title, yAxisLabel1, yAxisLabel2) {
 function drawHappinessChart(data) {
 
     var ctx = $('#chart1');
-
-    new Chart(ctx, getChartConfig(data, "Team Happiness", "Average Rating", "Response Count"));
+    clearDownChart(chart1);
+    chart1 = new Chart(ctx, getChartConfig(data, "Team Happiness", "Average Rating", "Response Count"));
 }
