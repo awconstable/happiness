@@ -40,7 +40,7 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: mvn dependency:resolve-plugins dependency:go-offline
+      - run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies -Dmaven.repo.local=~/.m2/repository
 
       - save_cache:
           paths:
