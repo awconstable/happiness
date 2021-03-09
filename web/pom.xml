@@ -68,11 +68,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.visualization</groupId>
-            <artifactId>visualization-datasource</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
             <scope>test</scope>
