@@ -7,28 +7,24 @@ import be.ceau.chart.options.elements.Fill;
 import com.austenconstable.web.hierarchy.HierarchyClient;
 import com.austenconstable.web.hierarchy.HierarchyEntity;
 import com.austenconstable.web.hierarchy.Relation;
+import com.austenconstable.web.rating.HappinessRating;
 import com.austenconstable.web.rating.HappinessRepository;
 import com.austenconstable.web.rating.HappinessWeeklyTrend;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.WeekFields;
 import java.util.*;
@@ -236,5 +232,25 @@ private String createDataPointLabel(int year, int week)
     return zonedDateTime.format(DateTimeFormatter.ISO_INSTANT);
     }
 
+    @GetMapping("/trend/90days/{teamId}")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public HappinessTrend get90DayTrend(@PathVariable String teamId){
+        return trendService.get90DayTrend(teamId, LocalDateTime.now().toLocalDate().atStartOfDay());
+    }
+
+    @GetMapping("/trend/90days/{teamId}/{date}")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public HappinessTrend get90DayTrend(@PathVariable String teamId, @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
+        return trendService.get90DayTrend(teamId, date.atStartOfDay());
+    }
+
+    @GetMapping("/ratings")
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public List<HappinessRating> getRatings(){
+        return happinessRepository.findAll();
+    }
 
 }
