@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping(value = "/version", produces = "application/json")
 public class VersionController
@@ -21,8 +23,11 @@ public class VersionController
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public String getVersion()
+    public HashMap<String, String> getVersion()
         {
-        return versionHolder.getVersion();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("version", versionHolder.getVersion());
+        map.put("buildDate", versionHolder.getBuildDate());
+        return map;
         }
     }
